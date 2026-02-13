@@ -5,6 +5,7 @@ requires-python = ">=3.11"
 dependencies = [
   "fastapi>=0.110",
   "uvicorn>=0.27",
+  "python-multipart>=0.0.9",
 ]
 
 [project.optional-dependencies]
@@ -14,7 +15,21 @@ dev = [
   "ruff>=0.5",
   "mypy>=1.10",
   "pre-commit>=3.7",
+  "datasets>=2.19",
+  "tqdm>=4.66",
 ]
+ml = [
+  "numpy>=1.26",
+  "opencv-python>=4.8",
+  "ultralytics>=8.2",
+]
+
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
@@ -27,17 +42,3 @@ target-version = "py311"
 python_version = "3.11"
 ignore_missing_imports = true
 strict = true
-
-[build-system]
-requires = ["setuptools>=69", "wheel"]
-build-backend = "setuptools.build_meta"
-
-[tool.setuptools.packages.find]
-where = ["src"]
-
-ml = [
-  "numpy>=1.26",
-  "opencv-python>=4.8",
-  "ultralytics>=8.2",
-]
-
