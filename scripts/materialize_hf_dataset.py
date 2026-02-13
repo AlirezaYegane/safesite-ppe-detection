@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 from pathlib import Path
+from typing import Any, Iterator, Mapping, Protocol
 
 from datasets import load_dataset
 from tqdm import tqdm
@@ -12,12 +13,17 @@ IMG_DIR = OUT_BASE / "images"
 ANN_DIR = OUT_BASE / "annotations"
 
 
-def save_split(ds, split_name: str) -> None:
+class DatasetLike(Protocol):
+    def __len__(self) -> int: ...
+    def __iter__(self) -> Iterator[Mapping[str, Any]]: ...
+
+
+def save_split(ds: DatasetLike, split_name: str) -> None:
     split_img_dir = IMG_DIR / split_name
     split_img_dir.mkdir(parents=True, exist_ok=True)
     ANN_DIR.mkdir(parents=True, exist_ok=True)
 
-    annotations = []
+    annotations: list[dict[str, Any]] = []
 
     for i, ex in tqdm(enumerate(ds), total=len(ds), desc=f"Saving {split_name}"):
         img = ex.get("image")
